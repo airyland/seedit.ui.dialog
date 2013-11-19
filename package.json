@@ -1,0 +1,27 @@
+{
+  "family": "seedit",
+  "name": "dialog",
+  "version": "0.0.1",
+  "description": "dialog solution",
+  "homepage": "https://github.com/airyland/seedit",
+  "author": "",
+  "maintainers": [
+    "",
+    ""
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/airyland/seedit.git"
+  },
+  "bugs": {
+    "url": ""
+  },
+  "keywords": [],
+  "licenses": "MIT",
+  "spm": {
+    "output": ["dialog.js"],
+    "alias": {},
+    "devAlias": {},
+    "engines": {}
+  }
+}
