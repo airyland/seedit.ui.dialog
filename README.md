@@ -2,11 +2,11 @@
 
 ---
 
-[![Build Status](https://secure.travis-ci.org/aralejs/dialog.png)](https://travis-ci.org/seedit/dialog)
-[![Coverage Status](https://coveralls.io/repos/aralejs/dialog/badge.png?branch=master)](https://coveralls.io/r/seedit/dialog)
+[![Build Status](https://secure.travis-ci.org/airyland/seedit.ui.dialog.png)](https://travis-ci.org/airyland/seedit.ui.dialog)
+[![Coverage Status](https://coveralls.io/repos/airyland/seedit.ui.dialog/badge.png?branch=master)](https://coveralls.io/r/airyland/seedit.ui.dialog)
 
 
-// description
+弹窗解决方式
 
 ---
 
