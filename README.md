@@ -6,7 +6,7 @@
 [![Coverage Status](https://coveralls.io/repos/airyland/seedit.ui.dialog/badge.png?branch=master)](https://coveralls.io/r/airyland/seedit.ui.dialog)
 
 
-弹窗解决方式
+Dialog solution
 
 ---
 
