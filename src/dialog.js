@@ -1,5 +1,5 @@
 define(function(require, exports, module) {
-    return function($) {
+    var jQuery = require('$');
         (function($) {
             //给页面装载CSS样式
             var LG = 'linear-gradient(top, #fafafa, #eee)',
@@ -400,5 +400,5 @@ define(function(require, exports, module) {
                 delay: 0 //弹窗打开后关闭的时间, 0和负值不触发
             };
         })(jQuery);
-    }
+    module.exports = jQuery;
 });
