@@ -33,9 +33,9 @@ define(function(require, exports, module) {
             '</div>' +
             '</div>';
 
-        $.fn.zxxbox = function(options) {
+        $.fn.dialog = function(options) {
             options = options || {};
-            var s = $.extend({}, zxxboxDefault, options);
+            var s = $.extend({}, dialogDefault, options);
             return this.each(function() {
                 var node = this.nodeName.toLowerCase();
                 if (node === "a" && s.ajaxTagA) {
@@ -43,10 +43,10 @@ define(function(require, exports, module) {
                         var href = $.trim($(this).attr("href"));
                         if (href && href.indexOf("javascript:") != 0) {
                             if (href.indexOf('#') === 0) {
-                                $.zxxbox($(href), options);
+                                $.dialog($(href), options);
                             } else {
                                 //加载图片
-                                $.zxxbox.loading();
+                                $.dialog.loading();
                                 var myImg = new Image(),
                                     element;
                                 myImg.onload = function() {
@@ -55,12 +55,12 @@ define(function(require, exports, module) {
                                     if (w > 0) {
                                         var element = $('<img src="' + href + '" width="' + w + '" height="' + h + '" />');
                                         options.protect = false;
-                                        $.zxxbox(element, options);
+                                        $.dialog(element, options);
                                     }
                                 };
                                 myImg.onerror = function() {
                                     //显示加载图片失败
-                                    $.zxxbox.ajax(href, {}, options);
+                                    $.dialog.ajax(href, {}, options);
                                 };
                                 myImg.src = href;
                             }
@@ -68,17 +68,17 @@ define(function(require, exports, module) {
                         return false;
                     });
                 } else {
-                    $.zxxbox($(this), options);
+                    $.dialog($(this), options);
                 }
             });
         };
 
-        $.zxxbox = function(elements, options) {
+        $.dialog = function(elements, options) {
             if (!elements) {
                 return;
             }
 
-            var s = $.extend({}, zxxboxDefault, options || {});
+            var s = $.extend({}, dialogDefault, options || {});
 
             //弹框的显示
             var eleOut = $("#wrapOut"),
@@ -128,50 +128,50 @@ define(function(require, exports, module) {
                 s.onshow();
             }
             //尺寸
-            $.zxxbox.setSize();
+            $.dialog.setSize();
             //定位
-            $.zxxbox.setPosition();
+            $.dialog.setPosition();
 
             if (s.fix) {
-                $.zxxbox.setFixed();
+                $.dialog.setFixed();
             }
             if (s.drag) {
-                $.zxxbox.drag();
+                $.dialog.drag();
             } else {
                 $(window).resize(function() {
-                    $.zxxbox.setPosition();
+                    $.dialog.setPosition();
                 });
             }
             if (!s.bar) {
-                $.zxxbox.barHide();
+                $.dialog.barHide();
             } else {
-                $.zxxbox.barShow();
+                $.dialog.barShow();
             }
             if (!s.bg) {
-                $.zxxbox.bgHide();
+                $.dialog.bgHide();
             } else {
-                $.zxxbox.bgShow();
+                $.dialog.bgShow();
             }
             if (!s.btnclose) {
-                $.zxxbox.closeBtnHide();
+                $.dialog.closeBtnHide();
             } else {
                 $.o.clo.click(function() {
-                    $.zxxbox.hide();
+                    $.dialog.hide();
                     return false;
                 });
             }
             if (s.bgclose) {
-                $.zxxbox.bgClickable();
+                $.dialog.bgClickable();
             }
             if (s.delay > 0) {
-                setTimeout($.zxxbox.hide, s.delay);
+                setTimeout($.dialog.hide, s.delay);
             }
 
             if (s.border===false) {
                 $.o.out.css('padding', '0');
             }
         };
-        $.extend($.zxxbox, {
+        $.extend($.dialog, {
             setSize: function() {
                 if (!$.o.bd.size() || !$.o.ele.size() || !$.o.bd.size()) {
                     return;
@@ -227,12 +227,12 @@ define(function(require, exports, module) {
                     return;
                 }
                 if (window.XMLHttpRequest) {
-                    $.zxxbox.setPosition().css({
+                    $.dialog.setPosition().css({
                         position: "fixed"
                     });
                 } else {
                     $(window).scroll(function() {
-                        $.zxxbox.setPosition();
+                        $.dialog.setPosition();
                     });
                 }
                 return $.o.out;
@@ -241,7 +241,7 @@ define(function(require, exports, module) {
             bgClickable: function() {
                 if ($.o.bg && $.o.bg.size()) {
                     $.o.bg.click(function() {
-                        $.zxxbox.hide();
+                        $.dialog.hide();
                     });
                 }
             },
@@ -333,14 +333,14 @@ define(function(require, exports, module) {
             //预载
             loading: function() {
                 var element = $('<div class="wrap_remind">加载中...</div>');
-                $.zxxbox(element, {
+                $.dialog(element, {
                     bar: false
                 });
             },
             //ask询问方法
             ask: function(message, sureCall, cancelCall, options) {
                 var element = $('<div class="wrap_remind">' + message + '<p><button id="zxxSureBtn" class="submit_btn">确认</button>&nbsp;&nbsp;<button id="zxxCancelBtn" class="cancel_btn">取消</button></p></div>');
-                $.zxxbox(element, options);
+                $.dialog(element, options);
                 //回调方法
                 $("#zxxSureBtn").click(function() {
                     if ($.isFunction(sureCall)) {
@@ -351,42 +351,42 @@ define(function(require, exports, module) {
                     if (cancelCall && $.isFunction(cancelCall)) {
                         cancelCall.call(this);
                     }
-                    $.zxxbox.hide();
+                    $.dialog.hide();
                 });
             },
             //remind提醒方法
             remind: function(message, callback, options) {
                 var element = $('<div class="wrap_remind">' + message + '<p><button id="zxxSubmitBtn" class="submit_btn">确认</button</p></div>');
-                $.zxxbox(element, options);
+                $.dialog(element, options);
                 $("#zxxSubmitBtn").click(function() {
                     //回调方法
                     if (callback && $.isFunction(callback)) {
                         callback.call(this);
                     }
-                    $.zxxbox.hide();
+                    $.dialog.hide();
                 });
 
             },
             //uri Ajax方法
             ajax: function(uri, params, options) {
                 if (uri) {
-                    $.zxxbox.loading();
+                    $.dialog.loading();
                     options = options || {};
                     options.protect = false;
                     $.ajax({
                         url: uri,
                         data: params || {},
                         success: function(html, other) {
-                            $.zxxbox(html, options);
+                            $.dialog(html, options);
                         },
                         error: function() {
-                            $.zxxbox.remind("加载出了点问题。");
+                            $.dialog.remind("加载出了点问题。");
                         }
                     });
                 }
             }
         });
-        var zxxboxDefault = {
+        var dialogDefault = {
             title: "对话框",
             shut: "×",
             index: 2000,
