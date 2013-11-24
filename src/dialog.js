@@ -88,7 +88,7 @@ define(function(require, exports, module) {
                 eleOut.show();
                 eleBlank[s.bg ? "show" : "hide"]();
             } else {
-                $("body").append(WRAP);
+                $(WRAP).hide().appendTo('body').show();
             }
 
             if (typeof(elements) === "object") {
