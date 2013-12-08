@@ -22,7 +22,7 @@ define(function (require, exports, module) {
                 '.submit_btn{font-size:12px;background:#486aaa;border:none;color:#f3f3f3;border-radius:3px;padding:4px 12px;}' +
                 '.submit_btn:hover{text-decoration:none;color:#fff;}' +
                 '.cancel_btn{background:#eee;border-color:#f0f0f0 #bbb #bbb #f0f0f0;color:#333;}' +
-                '.x-dialog-alert {padding:15px;color:#555;}' +
+                '.x-dialog-alert {padding:15px;color:#555;font-size:14px;}' +
                 '.x-dialog-alert p {margin:0;text-aligN: right;margin-right: 15px;margin-top: 10px;}' +
                 '</style>';
         $("head").append(CSS);
@@ -393,11 +393,11 @@ define(function (require, exports, module) {
                     'warn': ['&#13683', '#fffcee'],
                     'danger': ['&#13544', '#e76e70']
                 };
-                var defaults = {bar:false,icon: 'info', title: false, border: false};
+                var defaults = {bar: false, icon: 'info', title: false, border: false};
                 options = options || {};
                 options = $.extend(defaults, options);
                 var iconHTML = '<i class="x-dialog-icon" style="color:' + iconMap[options['icon']][1] + '">' + iconMap[options['icon']][0] + '</i>  ';
-                var element = $('<div class="x-dialog-alert">' + iconHTML + message + '<p><button id="x-dialog-button" class="submit_btn">确认</button></p></div>');
+                var element = $('<div class="x-dialog-alert">' + iconHTML + message + '<p><button id="x-dialog-button" class="submit_btn x-dialog-confirm">确认</button></p></div>');
                 $.dialog(element, options);
 
                 $(document).on('click', "#x-dialog-button", function () {
