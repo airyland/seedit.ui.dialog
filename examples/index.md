@@ -2,6 +2,18 @@
 ---
 
 ## alert
+<a href="javascript:" id="test0">点我</a>
+
+````javascript
+seajs.use('dialog', function($){
+   $("#test0").click(function(){
+    $.dialog.alert("你已成功受邀参加威尼斯电影节。",null);
+});
+});
+````
+
+
+## remind
 <a href="javascript:" id="test1">点我</a>
 
 ````javascript

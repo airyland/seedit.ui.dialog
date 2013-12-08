@@ -5,6 +5,8 @@ define(function (require, exports, module) {
         //给页面装载CSS样式
         var LG = 'linear-gradient(top, #fafafa, #eee)',
             CSS = '<style type="text/css">' +
+                "@font-face {font-family: 'iconfont';src: url('http://at.alicdn.com/t/font_1385445457_1809516.eot'); /* IE9*/src: url('http://at.alicdn.com/t/font_1385445457_1809516.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */ url('http://at.alicdn.com/t/font_1385445457_3880215.woff') format('woff'), /* chrome、firefox */ url('http://at.alicdn.com/t/font_1385445457_0878074.ttf') format('truetype'), /* chrome、firefox、opera、Safari, Android, iOS 4.2+*/ url('http://at.alicdn.com/t/font_1385445457_4335415.svg#svgFontName') format('svg'); /* iOS 4.1- */}" +
+                '.x-dialog-icon {font-family: "iconfont";font-size: 24px;font-style: normal;margin-right: 5px;}' +
                 '#zxxBlank{position:absolute;z-index:2000;left:0;top:0;width:100%;height:0;background:black;}' +
                 '.wrap_out{border-radius:4px;padding:4px;background:#eee;background:rgba(221,221,221,.8);/**box-shadow:0 0 6px rgba(0,0,0,.5);**/position:absolute;z-index:2000;left:-9999px;}' +
                 '.wrap_in{border-radius:3px;background:#fafafa;border:1px solid #ccc;}' +
@@ -13,13 +15,15 @@ define(function (require, exports, module) {
                 '.wrap_close{position:relative;}' +
                 '.wrap_close a{width:20px;height:20px;text-align:center;margin-top:-22px;color:#34538b;font:bold 1em/20px Tahoma;text-decoration:none;cursor:pointer;position:absolute;right:6px;}' +
                 '.wrap_close a:hover{text-decoration:none;color:#f30;}' +
-                '.wrap_body{background:white;border-radius:3px;padding-bottom:15px!important;}' +
+                '.wrap_body{background:white;border-radius:3px;padding-bottom:0;}' +
                 '.wrap_remind{width:16em;padding:30px 40px;}' +
                 '.wrap_remind p{margin:10px 0 0;}' +
                 '.submit_btn, .cancel_btn{display:inline-block;padding:3px 12px 1.99px;line-height:16px;border:1px solid;cursor:pointer;overflow:visible;}' +
-                '.submit_btn{background:#486aaa;border-color:#a0b3d6 #34538b #34538b #a0b3d6;color:#f3f3f3;}' +
+                '.submit_btn{font-size:12px;background:#486aaa;border:none;color:#f3f3f3;border-radius:3px;padding:4px 12px;}' +
                 '.submit_btn:hover{text-decoration:none;color:#fff;}' +
                 '.cancel_btn{background:#eee;border-color:#f0f0f0 #bbb #bbb #f0f0f0;color:#333;}' +
+                '.x-dialog-alert {padding:15px;color:#555;}' +
+                '.x-dialog-alert p {margin:0;text-aligN: right;margin-right: 15px;margin-top: 10px;}' +
                 '</style>';
         $("head").append(CSS);
 
@@ -111,6 +115,12 @@ define(function (require, exports, module) {
                 bd: $("#wrapBody")
             };
 
+
+            // 是否指定了id
+            if (s.id) {
+                $.o.out.addClass('x-dialog-' + id);
+            }
+
             // 标题以及关闭内容
 
             $.o.tit.html(s.title);
@@ -122,7 +132,7 @@ define(function (require, exports, module) {
                 $.o.bar.css('border', 'none');
                 $.o.tit.hide();
                 $.o.clo.css('top', '25px').show();
-                $.o.bd.css('padding', '25px 15px');
+                // $.o.bd.css('padding', '25px 15px');
             }
 
             // @todo focus on close btn
@@ -373,8 +383,32 @@ define(function (require, exports, module) {
                     }
                     $.dialog.hide();
                 });
-
             },
+
+            // 可带icon
+            alert: function (message, callback, options) {
+                var iconMap = {
+                    'success': ['&#13703', '#246a8e'],
+                    'info': ['&#13542', '#246a8e'],
+                    'warn': ['&#13683', '#fffcee'],
+                    'danger': ['&#13544', '#e76e70']
+                };
+                var defaults = {bar:false,icon: 'info', title: false, border: false};
+                options = options || {};
+                options = $.extend(defaults, options);
+                var iconHTML = '<i class="x-dialog-icon" style="color:' + iconMap[options['icon']][1] + '">' + iconMap[options['icon']][0] + '</i>  ';
+                var element = $('<div class="x-dialog-alert">' + iconHTML + message + '<p><button id="x-dialog-button" class="submit_btn">确认</button></p></div>');
+                $.dialog(element, options);
+
+                $(document).on('click', "#x-dialog-button", function () {
+                    //回调方法
+                    if (callback && $.isFunction(callback)) {
+                        callback.call(this);
+                    }
+                    $.dialog.hide();
+                });
+            },
+
             //uri Ajax方法
             ajax: function (uri, params, options) {
                 if (uri) {
@@ -420,7 +454,10 @@ define(function (require, exports, module) {
             onshow: $.noop, //弹窗显示后触发事件
             onclose: $.noop, //弹窗关闭后触发事件
 
-            delay: 0 //弹窗打开后关闭的时间, 0和负值不触发
+            delay: 0, //弹窗打开后关闭的时间, 0和负值不触发
+
+            id: "" // 标识一个弹窗的id
+
         };
     })(jQuery);
     module.exports = jQuery;
