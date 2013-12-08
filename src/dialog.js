@@ -1,10 +1,12 @@
 define(function (require, exports, module) {
     // @todo get dialog by id
     // @todo support remove method
+    // @todo share the same overlay
 
     // tweenMax
     var tweenMax = require.async('seedit/tweenMax/0.0.1/tweenMax');
     (function ($) {
+        var uid = 0;
         //给页面装载CSS样式
         var LG = 'linear-gradient(top, #fafafa, #eee)',
             CSS = '<style type="text/css">' +
@@ -82,23 +84,29 @@ define(function (require, exports, module) {
         };
 
         $.dialog = function (elements, options) {
+            uid++;
             if (!elements) {
                 return;
             }
 
             var s = $.extend({}, dialogDefault, options || {});
 
+
+            /* if (eleOut.size()) {
+             eleOut.show();
+             eleBlank[s.bg ? "show" : "hide"]();
+             } else {
+             $(WRAP).hide().appendTo('body').show();
+             }*/
+            var currentDialogClass = 'x-dialog-uid-' + uid,
+                $currentDialog = $('.' + currentDialogClass);
+            $(WRAP).eq(0).appendTo('body').show();
+            $(WRAP).eq(1).addClass(currentDialogClass).hide().appendTo('body').show();
+
             //弹框的显示
-            var eleOut = $("#wrapOut"),
+            var eleOut = $currentDialog,
                 eleBlank = $("#zxxBlank");
-
-            if (eleOut.size()) {
-                eleOut.show();
-                eleBlank[s.bg ? "show" : "hide"]();
-            } else {
-                $(WRAP).hide().appendTo('body').show();
-            }
-
+            eleBlank[s.bg ? "show" : "hide"]();
             // 如果为jQuery对象
             if (typeof(elements) === "object") {
                 elements.show();
@@ -106,16 +114,17 @@ define(function (require, exports, module) {
                 elements = $(elements);
             }
 
+
             //一些元素对象
             $.o = {
                 s: s,
                 ele: elements,
-                bg: eleBlank.size() ? eleBlank : $("#zxxBlank"),
-                out: eleOut.size() ? eleOut : $("#wrapOut"),
-                tit: $("#wrapTitle"),
-                bar: $("#wrapBar"),
-                clo: $("#wrapClose"),
-                bd: $("#wrapBody")
+                bg: /*eleBlank.size() ? eleBlank : */$("#zxxBlank"),
+                out: /* eleOut.size() ? eleOut :*/ $('.' + currentDialogClass),
+                tit: $currentDialog.find("#wrapTitle"),
+                bar: $('.' + currentDialogClass + " #wrapBar"),
+                clo: $('.' + currentDialogClass + " #wrapClose"),
+                bd: $('.' + currentDialogClass + " #wrapBody")
             };
 
 
@@ -189,7 +198,7 @@ define(function (require, exports, module) {
 
             if (s.border === false) {
                 $.o.out.css('padding', '0');
-                $('.wrap_in').css('border', 'none');
+                $currentDialog.find('.wrap_in').css('border', 'none');
             }
         };
         $.extend($.dialog, {
@@ -409,6 +418,9 @@ define(function (require, exports, module) {
                         callback.call(this);
                     }
                     $(this).closest('.x-dialog-wrap').hide();
+                    if ($('.x-dialog-wrap').length) {
+                        $('#zxxBlank').hide();
+                    }
                 });
             },
 
