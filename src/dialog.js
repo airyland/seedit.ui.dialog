@@ -1,4 +1,7 @@
 define(function (require, exports, module) {
+    // @todo get dialog by id
+    // @todo support remove method
+
     // tweenMax
     var tweenMax = require.async('seedit/tweenMax/0.0.1/tweenMax');
     (function ($) {
@@ -28,7 +31,7 @@ define(function (require, exports, module) {
         $("head").append(CSS);
 
         var WRAP = '<div id="zxxBlank" onselectstart="return false;"></div>' +
-            '<div class="wrap_out" id="wrapOut">' +
+            '<div class="wrap_out x-dialog-wrap" id="wrapOut">' +
             '<div class="wrap_in" id="wrapIn">' +
             '<div id="wrapBar" class="wrap_bar" onselectstart="return false;">' +
             '<h4 id="wrapTitle" class="wrap_title"></h4>' +
@@ -405,7 +408,7 @@ define(function (require, exports, module) {
                     if (callback && $.isFunction(callback)) {
                         callback.call(this);
                     }
-                    $.dialog.hide();
+                    $(this).closest('.x-dialog-wrap').hide();
                 });
             },
 
