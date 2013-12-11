@@ -409,6 +409,12 @@ define("seedit/dialog/0.0.1/dialog-debug", [], function(require, exports, module
             //弹窗打开后关闭的时间, 0和负值不触发
             id: ""
         };
+        // hide dialog when press key ESC
+        $(document).keyup(function(e) {
+            if (e.keyCode == 27) {
+                $.dialog.hide();
+            }
+        });
     })(jQuery);
     module.exports = jQuery;
 });

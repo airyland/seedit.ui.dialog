@@ -474,13 +474,12 @@ define(function (require, exports, module) {
             id: "" // 标识一个弹窗的id
 
         };
+        // hide dialog when press key ESC
+        $(document).keyup(function (e) {
+            if (e.keyCode == 27) {
+                $.dialog.hide();
+            }
+        });
     })(jQuery);
-
-    // hide dialog when press key ESC
-    $(document).keyup(function (e) {
-        if (e.keyCode == 27) {
-            $.dialog.hide();
-        }   // esc
-    });
     module.exports = jQuery;
 });
