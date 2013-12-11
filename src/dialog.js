@@ -475,5 +475,12 @@ define(function (require, exports, module) {
 
         };
     })(jQuery);
+
+    // hide dialog when press key ESC
+    $(document).keyup(function (e) {
+        if (e.keyCode == 27) {
+            $.dialog.hide();
+        }   // esc
+    });
     module.exports = jQuery;
 });
