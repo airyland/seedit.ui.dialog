@@ -15,41 +15,55 @@ define(function (require) {
             $.dialog.alert("你已成功受邀参加威尼斯电影节。", null);
         });
 
-        it('option::specified id',function(){
-            $.dialog('<p>hello world</p>',{
-                id:'dialog'
+        it('option::specified id', function () {
+            $.dialog('<p>hello world</p>', {
+                id: 'dialog'
             });
             expect($('.x-dialog-dialog').length).to.be(1);
         });
 
-        it('option::title',function(){
-            $.dialog('<p>hello world</p>',{
-                title:'hello world'
+        it('option::title', function () {
+            $.dialog('<p>hello world</p>', {
+                title: 'hello world'
             });
             expect($('.wrap_title').eq(0).text()).to.be('hello world');
         });
 
-        it('remind:show',function(){
-            $.dialog.remind("你已成功受邀参加威尼斯电影节。",null,{bar:false});
+        it('remind:show', function () {
+            $.dialog.remind("你已成功受邀参加威尼斯电影节。", null, {bar: false});
             expect($('.x-dialog-remind').length).to.be(1);
         });
 
-        it('confirm:show',function(){
-            $.dialog.confirm("你已成功受邀参加威尼斯电影节。",null,{bar:false});
+        it('confirm:show', function () {
+            $.dialog.confirm("你已成功受邀参加威尼斯电影节。", null, {bar: false});
             expect($('.x-dialog-confirm').length).to.be(1);
         });
 
-        it('alert:show',function(){
-            $.dialog.alert("你已成功受邀参加威尼斯电影节。",null,{bar:false});
+        it('alert:show', function () {
+            $.dialog.alert("你已成功受邀参加威尼斯电影节。", null, {bar: false});
             expect($('.x-dialog-alert').length).to.be(1);
         });
 
-        it('button:close',function(){
+        it('button:close', function () {
 
         });
 
-        it('remind:button',function(){
+        it('remind:button', function () {
 
+        });
+
+        it('interation:ESC key', function (done) {
+            $.dialog('<p>hello world</p>', {
+                id: 'dialog'
+            });
+            var event = jQuery.Event('keyup');
+            event.which = 27;
+            event.keyCode = 27;
+            jQuery(document).trigger(event);
+            setTimeout(function () {
+                expect($('.x-dialog-wrap').is(':visible')).to.be(false);
+                done();
+            }, 500);
         });
     });
 
