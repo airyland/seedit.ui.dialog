@@ -7,9 +7,9 @@ define("seedit/dialog/0.0.1/dialog-debug", [], function(require, exports, module
     (function($) {
         var uid = 0;
         //给页面装载CSS样式
-        var LG = "linear-gradient(top, #fafafa, #eee)", CSS = '<style type="text/css">' + "@font-face {font-family: 'iconfont';src: url('http://at.alicdn.com/t/font_1385445457_1809516.eot'); /* IE9*/src: url('http://at.alicdn.com/t/font_1385445457_1809516.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */ url('http://at.alicdn.com/t/font_1385445457_3880215.woff') format('woff'), /* chrome、firefox */ url('http://at.alicdn.com/t/font_1385445457_0878074.ttf') format('truetype'), /* chrome、firefox、opera、Safari, Android, iOS 4.2+*/ url('http://at.alicdn.com/t/font_1385445457_4335415.svg#svgFontName') format('svg'); /* iOS 4.1- */}" + '.x-dialog-icon {font-family: "iconfont";font-size: 24px;font-style: normal;margin-right: 5px;}' + "#zxxBlank{position:absolute;z-index:2000;left:0;top:0;width:100%;height:0;background:black;}" + ".wrap_out{border-radius:4px;padding:4px;background:#eee;background:rgba(221,221,221,.8);/**box-shadow:0 0 6px rgba(0,0,0,.5);**/position:absolute;z-index:2000;left:-9999px;}" + ".wrap_in{border-radius:3px;background:#fafafa;border:1px solid #ccc;}" + ".wrap_bar{border-bottom:1px solid #ddd;background:#f0f0f0;background:-moz-" + LG + ";background:-o-" + LG + ";background:-webkit-" + LG + ";background:" + LG + ";}" + ".wrap_title{line-height:24px;padding-left:10px;margin:0;font-weight:normal;font-size:1em;}" + ".wrap_close{position:relative;}" + ".wrap_close a{width:20px;height:20px;text-align:center;margin-top:-22px;color:#34538b;font:bold 1em/20px Tahoma;text-decoration:none;cursor:pointer;position:absolute;right:6px;}" + ".wrap_close a:hover{text-decoration:none;color:#f30;}" + ".wrap_body{background:white;border-radius:3px;padding-bottom:0;}" + ".wrap_remind{width:16em;padding:30px 40px;}" + ".wrap_remind p{margin:10px 0 0;}" + ".submit_btn, .cancel_btn{display:inline-block;padding:3px 12px 1.99px;line-height:16px;border:1px solid;cursor:pointer;overflow:visible;}" + ".submit_btn{font-size:12px;background:#486aaa;border:none;color:#f3f3f3;border-radius:3px;padding:4px 12px;}" + ".submit_btn:hover{text-decoration:none;color:#fff;}" + ".cancel_btn{background:#eee;border-color:#f0f0f0 #bbb #bbb #f0f0f0;color:#333;}" + ".x-dialog-alert {padding:15px;color:#555;font-size:14px;}" + ".x-dialog-alert p {margin:0;text-aligN: right;margin-right: 15px;margin-top: 10px;}" + "</style>";
+        var LG = "linear-gradient(top, #fafafa, #eee)", CSS = '<style type="text/css">' + "@font-face {font-family: 'iconfont';src: url('http://at.alicdn.com/t/font_1385445457_1809516.eot'); /* IE9*/src: url('http://at.alicdn.com/t/font_1385445457_1809516.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */ url('http://at.alicdn.com/t/font_1385445457_3880215.woff') format('woff'), /* chrome、firefox */ url('http://at.alicdn.com/t/font_1385445457_0878074.ttf') format('truetype'), /* chrome、firefox、opera、Safari, Android, iOS 4.2+*/ url('http://at.alicdn.com/t/font_1385445457_4335415.svg#svgFontName') format('svg'); /* iOS 4.1- */}" + '.x-dialog-icon {font-family: "iconfont";font-size: 24px;font-style: normal;margin-right: 5px;}' + "#x-overlay{position:absolute;z-index:2000;left:0;top:0;width:100%;height:0;background:black;}" + ".wrap_out{border-radius:4px;padding:4px;background:#eee;background:rgba(221,221,221,.8);/**box-shadow:0 0 6px rgba(0,0,0,.5);**/position:absolute;z-index:2000;left:-9999px;}" + ".wrap_in{border-radius:3px;background:#fafafa;border:1px solid #ccc;}" + ".wrap_bar{border-bottom:1px solid #ddd;background:#f0f0f0;background:-moz-" + LG + ";background:-o-" + LG + ";background:-webkit-" + LG + ";background:" + LG + ";}" + ".wrap_title{line-height:24px;padding-left:10px;margin:0;font-weight:normal;font-size:1em;}" + ".wrap_close{position:relative;}" + ".wrap_close a{width:20px;height:20px;text-align:center;margin-top:-22px;color:#34538b;font:bold 1em/20px Tahoma;text-decoration:none;cursor:pointer;position:absolute;right:6px;}" + ".wrap_close a:hover{text-decoration:none;color:#f30;}" + ".wrap_body{background:white;border-radius:3px;padding-bottom:0;}" + ".wrap_remind{width:16em;padding:30px 40px;}" + ".wrap_remind p{margin:10px 0 0;}" + ".submit_btn, .cancel_btn{display:inline-block;padding:3px 12px 1.99px;line-height:16px;border:1px solid;cursor:pointer;overflow:visible;}" + ".submit_btn{font-size:12px;background:#486aaa;border:none;color:#f3f3f3;border-radius:3px;padding:4px 12px;}" + ".submit_btn:hover{text-decoration:none;color:#fff;}" + ".cancel_btn{background:#eee;border-color:#f0f0f0 #bbb #bbb #f0f0f0;color:#333;}" + ".x-dialog-alert {padding:15px;color:#555;font-size:14px;}" + ".x-dialog-alert p {margin:0;text-aligN: right;margin-right: 15px;margin-top: 10px;}" + "</style>";
         $("head").append(CSS);
-        var WRAP = '<div id="zxxBlank" class="x-overlay" onselectstart="return false;"></div>' + '<div class="wrap_out x-dialog-wrap" id="wrapOut">' + '<div class="wrap_in" id="wrapIn">' + '<div id="wrapBar" class="wrap_bar" onselectstart="return false;">' + '<h4 id="wrapTitle" class="wrap_title"></h4>' + '<div class="wrap_close"><a href="javascript:" id="wrapClose" class="x-dialog-close" title="关闭"></a></div>' + "</div>" + '<div class="wrap_body" id="wrapBody"></div>' + "</div>" + "</div>";
+        var WRAP = '<div id="x-overlay" class="x-overlay" onselectstart="return false;"></div>' + '<div class="wrap_out x-dialog-wrap" id="wrapOut">' + '<div class="wrap_in" id="wrapIn">' + '<div id="wrapBar" class="wrap_bar" onselectstart="return false;">' + '<h4 id="wrapTitle" class="wrap_title"></h4>' + '<div class="wrap_close"><a href="javascript:" id="wrapClose" class="x-dialog-close" title="关闭"></a></div>' + "</div>" + '<div class="wrap_body" id="wrapBody"></div>' + "</div>" + "</div>";
         $.fn.dialog = function(options) {
             options = options || {};
             var s = $.extend({}, dialogDefault, options);
@@ -63,7 +63,7 @@ define("seedit/dialog/0.0.1/dialog-debug", [], function(require, exports, module
             $(WRAP).eq(0).appendTo("body").show();
             $(WRAP).eq(1).addClass(currentDialogClass).hide().appendTo("body").show();
             //弹框的显示
-            var eleOut = $currentDialog, eleBlank = $("#zxxBlank");
+            var eleOut = $currentDialog, eleBlank = $("#x-overlay");
             eleBlank[s.bg ? "show" : "hide"]();
             // 如果为jQuery对象
             if (typeof elements === "object") {
@@ -75,7 +75,7 @@ define("seedit/dialog/0.0.1/dialog-debug", [], function(require, exports, module
             $.o = {
                 s: s,
                 ele: elements,
-                bg: /*eleBlank.size() ? eleBlank : */ $("#zxxBlank"),
+                bg: /*eleBlank.size() ? eleBlank : */ $("#x-overlay"),
                 out: /* eleOut.size() ? eleOut :*/ $("." + currentDialogClass),
                 tit: $currentDialog.find("#wrapTitle"),
                 bar: $("." + currentDialogClass + " #wrapBar"),
@@ -224,7 +224,7 @@ define("seedit/dialog/0.0.1/dialog-debug", [], function(require, exports, module
                 if ($.o.bg && $.o.bg.size()) {
                     $.o.bg.show();
                 } else {
-                    $('<div id="zxxBlank"></div>').prependTo("body");
+                    $('<div id="x-overlay"></div>').prependTo("body");
                 }
             },
             //标题栏隐藏
@@ -356,7 +356,7 @@ define("seedit/dialog/0.0.1/dialog-debug", [], function(require, exports, module
                     $(this).closest(".x-dialog-wrap").hide();
                     // 只剩下本身一个提示，关闭遮罩
                     if ($(".x-dialog-wrap").length === 1) {
-                        $("#zxxBlank").hide();
+                        $("#x-overlay").hide();
                     }
                 });
             },

@@ -12,7 +12,7 @@ define(function (require, exports, module) {
             CSS = '<style type="text/css">' +
                 "@font-face {font-family: 'iconfont';src: url('http://at.alicdn.com/t/font_1385445457_1809516.eot'); /* IE9*/src: url('http://at.alicdn.com/t/font_1385445457_1809516.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */ url('http://at.alicdn.com/t/font_1385445457_3880215.woff') format('woff'), /* chrome、firefox */ url('http://at.alicdn.com/t/font_1385445457_0878074.ttf') format('truetype'), /* chrome、firefox、opera、Safari, Android, iOS 4.2+*/ url('http://at.alicdn.com/t/font_1385445457_4335415.svg#svgFontName') format('svg'); /* iOS 4.1- */}" +
                 '.x-dialog-icon {font-family: "iconfont";font-size: 24px;font-style: normal;margin-right: 5px;}' +
-                '#zxxBlank{position:absolute;z-index:2000;left:0;top:0;width:100%;height:0;background:black;}' +
+                '#x-overlay{position:absolute;z-index:2000;left:0;top:0;width:100%;height:0;background:black;}' +
                 '.wrap_out{border-radius:4px;padding:4px;background:#eee;background:rgba(221,221,221,.8);/**box-shadow:0 0 6px rgba(0,0,0,.5);**/position:absolute;z-index:2000;left:-9999px;}' +
                 '.wrap_in{border-radius:3px;background:#fafafa;border:1px solid #ccc;}' +
                 '.wrap_bar{border-bottom:1px solid #ddd;background:#f0f0f0;background:-moz-' + LG + ';background:-o-' + LG + ';background:-webkit-' + LG + ';background:' + LG + ';}' +
@@ -32,7 +32,7 @@ define(function (require, exports, module) {
                 '</style>';
         $("head").append(CSS);
 
-        var WRAP = '<div id="zxxBlank" class="x-overlay" onselectstart="return false;"></div>' +
+        var WRAP = '<div id="x-overlay" class="x-overlay" onselectstart="return false;"></div>' +
             '<div class="wrap_out x-dialog-wrap" id="wrapOut">' +
             '<div class="wrap_in" id="wrapIn">' +
             '<div id="wrapBar" class="wrap_bar" onselectstart="return false;">' +
@@ -105,7 +105,7 @@ define(function (require, exports, module) {
 
             //弹框的显示
             var eleOut = $currentDialog,
-                eleBlank = $("#zxxBlank");
+                eleBlank = $("#x-overlay");
             eleBlank[s.bg ? "show" : "hide"]();
             // 如果为jQuery对象
             if (typeof(elements) === "object") {
@@ -119,7 +119,7 @@ define(function (require, exports, module) {
             $.o = {
                 s: s,
                 ele: elements,
-                bg: /*eleBlank.size() ? eleBlank : */$("#zxxBlank"),
+                bg: /*eleBlank.size() ? eleBlank : */$("#x-overlay"),
                 out: /* eleOut.size() ? eleOut :*/ $('.' + currentDialogClass),
                 tit: $currentDialog.find("#wrapTitle"),
                 bar: $('.' + currentDialogClass + " #wrapBar"),
@@ -292,7 +292,7 @@ define(function (require, exports, module) {
                 if ($.o.bg && $.o.bg.size()) {
                     $.o.bg.show();
                 } else {
-                    $('<div id="zxxBlank"></div>').prependTo("body");
+                    $('<div id="x-overlay"></div>').prependTo("body");
                 }
             },
             //标题栏隐藏
@@ -429,7 +429,7 @@ define(function (require, exports, module) {
 
                     // 只剩下本身一个提示，关闭遮罩
                     if ($('.x-dialog-wrap').length === 1) {
-                        $('#zxxBlank').hide();
+                        $('#x-overlay').hide();
                     }
                 });
             },
