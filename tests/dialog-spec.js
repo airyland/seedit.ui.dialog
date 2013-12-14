@@ -1,12 +1,19 @@
-define(function(require) {
+define(function (require) {
+    var dialog = require('dialog');
+    var $ = require('jquery');
+    var expect = require('expect');
+    var sinon = require('sinon');
+    describe('dialog', function () {
 
-  var dialog = require('dialog');
+        afterEach(function () {
+            $('.x-overlay,.x-dialog-wrap').remove();
+        });
 
-  describe('dialog', function() {
-
-    it('normal usage', function() {
-
+        it('overlay::share the same one', function () {
+            $.dialog.alert("你已成功受邀参加威尼斯电影节。", null);
+            expect($('#x-overlay').length).to.be(1);
+            $.dialog.alert("你已成功受邀参加威尼斯电影节。", null);
+        });
     });
-  });
 
 });

@@ -28,7 +28,7 @@ define(function (require, exports, module) {
                 '.submit_btn:hover{text-decoration:none;color:#fff;}' +
                 '.cancel_btn{background:#eee;border-color:#f0f0f0 #bbb #bbb #f0f0f0;color:#333;}' +
                 '.x-dialog-alert {padding:15px;color:#555;font-size:14px;}' +
-                '.x-dialog-alert p {margin:0;text-aligN: right;margin-right: 15px;margin-top: 10px;}' +
+                '.x-dialog-alert p {margin:0;text-align: right;margin-right: 15px;margin-top: 10px;}' +
                 '</style>';
         $("head").append(CSS);
 
@@ -100,7 +100,9 @@ define(function (require, exports, module) {
              }*/
             var currentDialogClass = 'x-dialog-uid-' + uid,
                 $currentDialog = $('.' + currentDialogClass);
-            $(WRAP).eq(0).appendTo('body').show();
+            if (!$('#x-overlay').length) {
+                $(WRAP).eq(0).appendTo('body').show();
+            }
             $(WRAP).eq(1).addClass(currentDialogClass).hide().appendTo('body').show();
 
             //弹框的显示
@@ -119,8 +121,8 @@ define(function (require, exports, module) {
             $.o = {
                 s: s,
                 ele: elements,
-                bg: /*eleBlank.size() ? eleBlank : */$("#x-overlay"),
-                out: /* eleOut.size() ? eleOut :*/ $('.' + currentDialogClass),
+                bg: eleBlank,
+                out: $('.' + currentDialogClass),
                 tit: $currentDialog.find("#wrapTitle"),
                 bar: $('.' + currentDialogClass + " #wrapBar"),
                 clo: $('.' + currentDialogClass + " #wrapClose"),
@@ -128,9 +130,9 @@ define(function (require, exports, module) {
             };
 
 
-            // 是否指定了id
+            // if an id is specified
             if (s.id) {
-                $.o.out.addClass('x-dialog-' + id);
+                $.o.out.addClass('x-dialog-' + s.id);
             }
 
             // 标题以及关闭内容
@@ -289,10 +291,10 @@ define(function (require, exports, module) {
             },
             //背景层显示
             bgShow: function () {
-                if ($.o.bg && $.o.bg.size()) {
-                    $.o.bg.show();
+                if ($('#x-overlay').length) {
+                    $('#x-overlay').show();
                 } else {
-                    $('<div id="x-overlay"></div>').prependTo("body");
+                    $('<div id="x-overlay"></div>').appendTo("body");
                 }
             },
             //标题栏隐藏
@@ -423,14 +425,12 @@ define(function (require, exports, module) {
                     if (callback && $.isFunction(callback)) {
                         callback.call(this);
                     }
-
-                    //本身弹窗关闭
-                    $(this).closest('.x-dialog-wrap').hide();
-
                     // 只剩下本身一个提示，关闭遮罩
-                    if ($('.x-dialog-wrap').length === 1) {
+                    if ($('.x-dialog-wrap:visible').length === 1) {
                         $('#x-overlay').hide();
                     }
+                    //本身弹窗关闭
+                    $(this).closest('.x-dialog-wrap').hide();
                 });
             },
 
