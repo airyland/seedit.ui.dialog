@@ -32,12 +32,12 @@ define(function (require, exports, module) {
                 '</style>';
         $("head").append(CSS);
 
-        var WRAP = '<div id="zxxBlank" onselectstart="return false;"></div>' +
+        var WRAP = '<div id="zxxBlank" class="x-overlay" onselectstart="return false;"></div>' +
             '<div class="wrap_out x-dialog-wrap" id="wrapOut">' +
             '<div class="wrap_in" id="wrapIn">' +
             '<div id="wrapBar" class="wrap_bar" onselectstart="return false;">' +
             '<h4 id="wrapTitle" class="wrap_title"></h4>' +
-            '<div class="wrap_close"><a href="javasctipt:" id="wrapClose" title="关闭"></a></div>' +
+            '<div class="wrap_close"><a href="javascript:" id="wrapClose" class="x-dialog-close" title="关闭"></a></div>' +
             '</div>' +
             '<div class="wrap_body" id="wrapBody"></div>' +
             '</div>' +
@@ -184,11 +184,17 @@ define(function (require, exports, module) {
             if (!s.btnclose) {
                 $.dialog.closeBtnHide();
             } else {
-                $.o.clo.click(function () {
-                    $.dialog.hide();
-                    return false;
-                });
+
             }
+
+            // 弹窗关闭按钮
+            $(document).on('click', '.x-dialog-close', function (e) {
+                e.preventDefault();
+                $(this).closest('.x-dialog-wrap').hide();
+                $('.x-overlay').hide();
+            });
+
+
             if (s.bgclose) {
                 $.dialog.bgClickable();
             }
@@ -417,8 +423,12 @@ define(function (require, exports, module) {
                     if (callback && $.isFunction(callback)) {
                         callback.call(this);
                     }
+
+                    //本身弹窗关闭
                     $(this).closest('.x-dialog-wrap').hide();
-                    if ($('.x-dialog-wrap').length) {
+
+                    // 只剩下本身一个提示，关闭遮罩
+                    if ($('.x-dialog-wrap').length === 1) {
                         $('#zxxBlank').hide();
                     }
                 });
