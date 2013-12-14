@@ -1,7 +1,8 @@
 define(function (require, exports, module) {
     // @todo get dialog by id
     // @todo support remove method
-    // @todo share the same overlay
+    // @todo option::trigger support
+    // @todo animation support
 
     // tweenMax
     var tweenMax = require.async('seedit/tweenMax/0.0.1/tweenMax');
@@ -32,7 +33,7 @@ define(function (require, exports, module) {
                 '</style>';
         $("head").append(CSS);
 
-        var WRAP = '<div id="x-overlay" class="x-overlay" onselectstart="return false;"></div>' +
+        var dialogTpl = '<div id="x-overlay" class="x-overlay" onselectstart="return false;"></div>' +
             '<div class="wrap_out x-dialog-wrap" id="wrapOut">' +
             '<div class="wrap_in" id="wrapIn">' +
             '<div id="wrapBar" class="wrap_bar" onselectstart="return false;">' +
@@ -91,19 +92,12 @@ define(function (require, exports, module) {
 
             var s = $.extend({}, dialogDefault, options || {});
 
-
-            /* if (eleOut.size()) {
-             eleOut.show();
-             eleBlank[s.bg ? "show" : "hide"]();
-             } else {
-             $(WRAP).hide().appendTo('body').show();
-             }*/
             var currentDialogClass = 'x-dialog-uid-' + uid,
                 $currentDialog = $('.' + currentDialogClass);
             if (!$('#x-overlay').length) {
-                $(WRAP).eq(0).appendTo('body').show();
+                $(dialogTpl).eq(0).appendTo('body').show();
             }
-            $(WRAP).eq(1).addClass(currentDialogClass).hide().appendTo('body').show();
+            $(dialogTpl).eq(1).addClass(currentDialogClass).hide().appendTo('body').show();
 
             //弹框的显示
             var eleOut = $currentDialog,
@@ -123,7 +117,7 @@ define(function (require, exports, module) {
                 ele: elements,
                 bg: eleBlank,
                 out: $('.' + currentDialogClass),
-                tit: $currentDialog.find("#wrapTitle"),
+                tit: $('.' + currentDialogClass + " #wrapTitle"),
                 bar: $('.' + currentDialogClass + " #wrapBar"),
                 clo: $('.' + currentDialogClass + " #wrapClose"),
                 bd: $('.' + currentDialogClass + " #wrapBody")
@@ -135,10 +129,10 @@ define(function (require, exports, module) {
                 $.o.out.addClass('x-dialog-' + s.id);
             }
 
-            // 标题以及关闭内容
-
+            // title
             $.o.tit.html(s.title);
 
+            // close button
             $.o.clo.html(s.shut);
 
             // just show close btn
@@ -146,7 +140,6 @@ define(function (require, exports, module) {
                 $.o.bar.css('border', 'none');
                 $.o.tit.hide();
                 $.o.clo.css('top', '25px').show();
-                // $.o.bd.css('padding', '25px 15px');
             }
 
             // @todo focus on close btn
@@ -208,6 +201,8 @@ define(function (require, exports, module) {
                 $.o.out.css('padding', '0');
                 $currentDialog.find('.wrap_in').css('border', 'none');
             }
+
+            return $.o.out;
         };
         $.extend($.dialog, {
             setSize: function () {
@@ -376,8 +371,8 @@ define(function (require, exports, module) {
                 });
             },
             //ask询问方法
-            ask: function (message, sureCall, cancelCall, options) {
-                var element = $('<div class="wrap_remind">' + message + '<p><button id="zxxSureBtn" class="submit_btn">确认</button>&nbsp;&nbsp;<button id="zxxCancelBtn" class="cancel_btn">取消</button></p></div>');
+            confirm: function (message, sureCall, cancelCall, options) {
+                var element = $('<div class="wrap_remind x-dialog-confirm">' + message + '<p><button id="zxxSureBtn" class="submit_btn">确认</button>&nbsp;&nbsp;<button id="zxxCancelBtn" class="cancel_btn">取消</button></p></div>');
                 $.dialog(element, options);
                 //回调方法
                 $("#zxxSureBtn").click(function () {
@@ -394,7 +389,7 @@ define(function (require, exports, module) {
             },
             //remind提醒方法
             remind: function (message, callback, options) {
-                var element = $('<div class="wrap_remind">' + message + '<p><button id="zxxSubmitBtn" class="submit_btn">确认</button</p></div>');
+                var element = $('<div class="wrap_remind x-dialog-remind">' + message + '<p><button id="zxxSubmitBtn" class="submit_btn">确认</button</p></div>');
                 $.dialog(element, options);
                 $("#zxxSubmitBtn").click(function () {
                     //回调方法

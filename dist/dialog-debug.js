@@ -1,7 +1,8 @@
 define("seedit/dialog/0.0.1/dialog-debug", [], function(require, exports, module) {
     // @todo get dialog by id
     // @todo support remove method
-    // @todo share the same overlay
+    // @todo option::trigger support
+    // @todo animation support
     // tweenMax
     var tweenMax = require.async("seedit/tweenMax/0.0.1/tweenMax-debug");
     (function($) {
@@ -9,7 +10,7 @@ define("seedit/dialog/0.0.1/dialog-debug", [], function(require, exports, module
         //给页面装载CSS样式
         var LG = "linear-gradient(top, #fafafa, #eee)", CSS = '<style type="text/css">' + "@font-face {font-family: 'iconfont';src: url('http://at.alicdn.com/t/font_1385445457_1809516.eot'); /* IE9*/src: url('http://at.alicdn.com/t/font_1385445457_1809516.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */ url('http://at.alicdn.com/t/font_1385445457_3880215.woff') format('woff'), /* chrome、firefox */ url('http://at.alicdn.com/t/font_1385445457_0878074.ttf') format('truetype'), /* chrome、firefox、opera、Safari, Android, iOS 4.2+*/ url('http://at.alicdn.com/t/font_1385445457_4335415.svg#svgFontName') format('svg'); /* iOS 4.1- */}" + '.x-dialog-icon {font-family: "iconfont";font-size: 24px;font-style: normal;margin-right: 5px;}' + "#x-overlay{position:absolute;z-index:2000;left:0;top:0;width:100%;height:0;background:black;}" + ".wrap_out{border-radius:4px;padding:4px;background:#eee;background:rgba(221,221,221,.8);/**box-shadow:0 0 6px rgba(0,0,0,.5);**/position:absolute;z-index:2000;left:-9999px;}" + ".wrap_in{border-radius:3px;background:#fafafa;border:1px solid #ccc;}" + ".wrap_bar{border-bottom:1px solid #ddd;background:#f0f0f0;background:-moz-" + LG + ";background:-o-" + LG + ";background:-webkit-" + LG + ";background:" + LG + ";}" + ".wrap_title{line-height:24px;padding-left:10px;margin:0;font-weight:normal;font-size:1em;}" + ".wrap_close{position:relative;}" + ".wrap_close a{width:20px;height:20px;text-align:center;margin-top:-22px;color:#34538b;font:bold 1em/20px Tahoma;text-decoration:none;cursor:pointer;position:absolute;right:6px;}" + ".wrap_close a:hover{text-decoration:none;color:#f30;}" + ".wrap_body{background:white;border-radius:3px;padding-bottom:0;}" + ".wrap_remind{width:16em;padding:30px 40px;}" + ".wrap_remind p{margin:10px 0 0;}" + ".submit_btn, .cancel_btn{display:inline-block;padding:3px 12px 1.99px;line-height:16px;border:1px solid;cursor:pointer;overflow:visible;}" + ".submit_btn{font-size:12px;background:#486aaa;border:none;color:#f3f3f3;border-radius:3px;padding:4px 12px;}" + ".submit_btn:hover{text-decoration:none;color:#fff;}" + ".cancel_btn{background:#eee;border-color:#f0f0f0 #bbb #bbb #f0f0f0;color:#333;}" + ".x-dialog-alert {padding:15px;color:#555;font-size:14px;}" + ".x-dialog-alert p {margin:0;text-align: right;margin-right: 15px;margin-top: 10px;}" + "</style>";
         $("head").append(CSS);
-        var WRAP = '<div id="x-overlay" class="x-overlay" onselectstart="return false;"></div>' + '<div class="wrap_out x-dialog-wrap" id="wrapOut">' + '<div class="wrap_in" id="wrapIn">' + '<div id="wrapBar" class="wrap_bar" onselectstart="return false;">' + '<h4 id="wrapTitle" class="wrap_title"></h4>' + '<div class="wrap_close"><a href="javascript:" id="wrapClose" class="x-dialog-close" title="关闭"></a></div>' + "</div>" + '<div class="wrap_body" id="wrapBody"></div>' + "</div>" + "</div>";
+        var dialogTpl = '<div id="x-overlay" class="x-overlay" onselectstart="return false;"></div>' + '<div class="wrap_out x-dialog-wrap" id="wrapOut">' + '<div class="wrap_in" id="wrapIn">' + '<div id="wrapBar" class="wrap_bar" onselectstart="return false;">' + '<h4 id="wrapTitle" class="wrap_title"></h4>' + '<div class="wrap_close"><a href="javascript:" id="wrapClose" class="x-dialog-close" title="关闭"></a></div>' + "</div>" + '<div class="wrap_body" id="wrapBody"></div>' + "</div>" + "</div>";
         $.fn.dialog = function(options) {
             options = options || {};
             var s = $.extend({}, dialogDefault, options);
@@ -53,15 +54,11 @@ define("seedit/dialog/0.0.1/dialog-debug", [], function(require, exports, module
                 return;
             }
             var s = $.extend({}, dialogDefault, options || {});
-            /* if (eleOut.size()) {
-             eleOut.show();
-             eleBlank[s.bg ? "show" : "hide"]();
-             } else {
-             $(WRAP).hide().appendTo('body').show();
-             }*/
             var currentDialogClass = "x-dialog-uid-" + uid, $currentDialog = $("." + currentDialogClass);
-            $(WRAP).eq(0).appendTo("body").show();
-            $(WRAP).eq(1).addClass(currentDialogClass).hide().appendTo("body").show();
+            if (!$("#x-overlay").length) {
+                $(dialogTpl).eq(0).appendTo("body").show();
+            }
+            $(dialogTpl).eq(1).addClass(currentDialogClass).hide().appendTo("body").show();
             //弹框的显示
             var eleOut = $currentDialog, eleBlank = $("#x-overlay");
             eleBlank[s.bg ? "show" : "hide"]();
@@ -76,8 +73,8 @@ define("seedit/dialog/0.0.1/dialog-debug", [], function(require, exports, module
                 s: s,
                 ele: elements,
                 bg: eleBlank,
-                out: $currentDialog,
-                tit: $currentDialog.find("#wrapTitle"),
+                out: $("." + currentDialogClass),
+                tit: $("." + currentDialogClass + " #wrapTitle"),
                 bar: $("." + currentDialogClass + " #wrapBar"),
                 clo: $("." + currentDialogClass + " #wrapClose"),
                 bd: $("." + currentDialogClass + " #wrapBody")
@@ -86,8 +83,9 @@ define("seedit/dialog/0.0.1/dialog-debug", [], function(require, exports, module
             if (s.id) {
                 $.o.out.addClass("x-dialog-" + s.id);
             }
-            // 标题以及关闭内容
+            // title
             $.o.tit.html(s.title);
+            // close button
             $.o.clo.html(s.shut);
             // just show close btn
             if (!s.title && s.btnclose) {
@@ -145,6 +143,7 @@ define("seedit/dialog/0.0.1/dialog-debug", [], function(require, exports, module
                 $.o.out.css("padding", "0");
                 $currentDialog.find(".wrap_in").css("border", "none");
             }
+            return $.o.out;
         };
         $.extend($.dialog, {
             setSize: function() {
@@ -300,8 +299,8 @@ define("seedit/dialog/0.0.1/dialog-debug", [], function(require, exports, module
                 });
             },
             //ask询问方法
-            ask: function(message, sureCall, cancelCall, options) {
-                var element = $('<div class="wrap_remind">' + message + '<p><button id="zxxSureBtn" class="submit_btn">确认</button>&nbsp;&nbsp;<button id="zxxCancelBtn" class="cancel_btn">取消</button></p></div>');
+            confirm: function(message, sureCall, cancelCall, options) {
+                var element = $('<div class="wrap_remind x-dialog-confirm">' + message + '<p><button id="zxxSureBtn" class="submit_btn">确认</button>&nbsp;&nbsp;<button id="zxxCancelBtn" class="cancel_btn">取消</button></p></div>');
                 $.dialog(element, options);
                 //回调方法
                 $("#zxxSureBtn").click(function() {
@@ -318,7 +317,7 @@ define("seedit/dialog/0.0.1/dialog-debug", [], function(require, exports, module
             },
             //remind提醒方法
             remind: function(message, callback, options) {
-                var element = $('<div class="wrap_remind">' + message + '<p><button id="zxxSubmitBtn" class="submit_btn">确认</button</p></div>');
+                var element = $('<div class="wrap_remind x-dialog-remind">' + message + '<p><button id="zxxSubmitBtn" class="submit_btn">确认</button</p></div>');
                 $.dialog(element, options);
                 $("#zxxSubmitBtn").click(function() {
                     //回调方法
@@ -352,12 +351,12 @@ define("seedit/dialog/0.0.1/dialog-debug", [], function(require, exports, module
                     if (callback && $.isFunction(callback)) {
                         callback.call(this);
                     }
-                    //本身弹窗关闭
-                    $(this).closest(".x-dialog-wrap").hide();
                     // 只剩下本身一个提示，关闭遮罩
-                    if ($(".x-dialog-wrap").length === 1) {
+                    if ($(".x-dialog-wrap:visible").length === 1) {
                         $("#x-overlay").hide();
                     }
+                    //本身弹窗关闭
+                    $(this).closest(".x-dialog-wrap").hide();
                 });
             },
             //uri Ajax方法

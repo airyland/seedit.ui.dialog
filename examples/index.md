@@ -1,8 +1,20 @@
 # 快捷方式
 ---
 
+## normal
+<a href="javascript:" id="test00">点我</a>
+
+````javascript
+ seajs.use('dialog', function($){
+    $("#test00").click(function(){
+     $.dialog("<p>你已成功受邀参加威尼斯电影节。</p>",{title:'haha'});
+ });
+ });
+ ````
+
 ## alert
 <a href="javascript:" id="test0">点我</a>
+
 
 ````javascript
 seajs.use('dialog', function($){
@@ -68,7 +80,7 @@ $("#test2").click(function(){
 ````javascript
 seajs.use('dialog', function($){
 $("#test3").click(function(){
-    $.dialog.ask("确认改变页面的背景色为天蓝色", function(){
+    $.dialog.confirm("确认改变页面的背景色为天蓝色", function(){
         $("body").css("background-color", "azure"); 
         $.dialog.hide();
     }, null, {
