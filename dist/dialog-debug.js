@@ -1,42 +1,46 @@
-define("seedit/dialog/0.0.1/dialog-debug", [], function(require, exports, module) {
+define("moe/dialog/0.0.2/dialog-debug", [], function(require, exports, module) {
     // @todo get dialog by id
     // @todo support remove method
     // @todo option::trigger support
     // @todo animation support
+    var $$ = {};
     // tweenMax
-    var tweenMax = require.async("seedit/tweenMax/0.0.1/tweenMax-debug");
+    var tweenMax = require.async("moe/tweenMax/0.0.1/tweenMax-debug");
     (function($) {
         var uid = 0;
         //给页面装载CSS样式
         var LG = "linear-gradient(top, #fafafa, #eee)", CSS = '<style type="text/css">' + "@font-face {font-family: 'iconfont';src: url('http://at.alicdn.com/t/font_1385445457_1809516.eot'); /* IE9*/src: url('http://at.alicdn.com/t/font_1385445457_1809516.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */ url('http://at.alicdn.com/t/font_1385445457_3880215.woff') format('woff'), /* chrome、firefox */ url('http://at.alicdn.com/t/font_1385445457_0878074.ttf') format('truetype'), /* chrome、firefox、opera、Safari, Android, iOS 4.2+*/ url('http://at.alicdn.com/t/font_1385445457_4335415.svg#svgFontName') format('svg'); /* iOS 4.1- */}" + '.x-dialog-icon {font-family: "iconfont";font-size: 24px;font-style: normal;margin-right: 5px;}' + "#x-overlay{position:absolute;z-index:2000;left:0;top:0;width:100%;height:0;background:black;}" + ".wrap_out{border-radius:4px;padding:4px;background:#eee;background:rgba(221,221,221,.8);/**box-shadow:0 0 6px rgba(0,0,0,.5);**/position:absolute;z-index:2000;left:-9999px;}" + ".wrap_in{border-radius:3px;background:#fafafa;border:1px solid #ccc;}" + ".wrap_bar{border-bottom:1px solid #ddd;background:#f0f0f0;background:-moz-" + LG + ";background:-o-" + LG + ";background:-webkit-" + LG + ";background:" + LG + ";}" + ".wrap_title{line-height:24px;padding-left:10px;margin:0;font-weight:normal;font-size:1em;}" + ".wrap_close{position:relative;}" + ".wrap_close a{width:20px;height:20px;text-align:center;margin-top:-22px;color:#34538b;font:bold 1em/20px Tahoma;text-decoration:none;cursor:pointer;position:absolute;right:6px;}" + ".wrap_close a:hover{text-decoration:none;color:#f30;}" + ".wrap_body{background:white;border-radius:3px;padding-bottom:0;}" + ".wrap_remind{width:16em;padding:30px 40px;}" + ".wrap_remind p{margin:10px 0 0;}" + ".submit_btn, .cancel_btn{display:inline-block;padding:3px 12px 1.99px;line-height:16px;border:1px solid;cursor:pointer;overflow:visible;}" + ".submit_btn{font-size:12px;background:#486aaa;border:none;color:#f3f3f3;border-radius:3px;padding:4px 12px;}" + ".submit_btn:hover{text-decoration:none;color:#fff;}" + ".cancel_btn{background:#eee;border-color:#f0f0f0 #bbb #bbb #f0f0f0;color:#333;}" + ".x-dialog-alert {padding:15px;color:#555;font-size:14px;}" + ".x-dialog-alert p {margin:0;text-align: right;margin-right: 15px;margin-top: 10px;}" + "</style>";
         $("head").append(CSS);
         var dialogTpl = '<div id="x-overlay" class="x-overlay" onselectstart="return false;"></div>' + '<div class="wrap_out x-dialog-wrap" id="wrapOut">' + '<div class="wrap_in" id="wrapIn">' + '<div id="wrapBar" class="wrap_bar" onselectstart="return false;">' + '<h4 id="wrapTitle" class="wrap_title"></h4>' + '<div class="wrap_close"><a href="javascript:" id="wrapClose" class="x-dialog-close" title="关闭"></a></div>' + "</div>" + '<div class="wrap_body" id="wrapBody"></div>' + "</div>" + "</div>";
-        $.fn.dialog = function(options) {
+        /**
+         $.fn.dialog = function (options) {
             options = options || {};
             var s = $.extend({}, dialogDefault, options);
-            return this.each(function() {
+            return this.each(function () {
                 var node = this.nodeName.toLowerCase();
                 if (node === "a" && s.ajaxTagA) {
-                    $(this).click(function() {
+                    $(this).click(function () {
                         var href = $.trim($(this).attr("href"));
                         if (href && href.indexOf("javascript:") != 0) {
-                            if (href.indexOf("#") === 0) {
-                                $.dialog($(href), options);
+                            if (href.indexOf('#') === 0) {
+                                $$.dialog($(href), options);
                             } else {
                                 //加载图片
-                                $.dialog.loading();
-                                var myImg = new Image(), element;
-                                myImg.onload = function() {
-                                    var w = myImg.width, h = myImg.height;
+                                $$.dialog.loading();
+                                var myImg = new Image(),
+                                    element;
+                                myImg.onload = function () {
+                                    var w = myImg.width,
+                                        h = myImg.height;
                                     if (w > 0) {
                                         var element = $('<img src="' + href + '" width="' + w + '" height="' + h + '" />');
                                         options.protect = false;
-                                        $.dialog(element, options);
+                                        $$.dialog(element, options);
                                     }
                                 };
-                                myImg.onerror = function() {
+                                myImg.onerror = function () {
                                     //显示加载图片失败
-                                    $.dialog.ajax(href, {}, options);
+                                    $$.dialog.ajax(href, {}, options);
                                 };
                                 myImg.src = href;
                             }
@@ -44,11 +48,13 @@ define("seedit/dialog/0.0.1/dialog-debug", [], function(require, exports, module
                         return false;
                     });
                 } else {
-                    $.dialog($(this), options);
+                    $$.dialog($(this), options);
                 }
             });
         };
-        $.dialog = function(elements, options) {
+
+         **/
+        $$.dialog = function(elements, options) {
             uid++;
             if (!elements) {
                 return;
@@ -69,7 +75,7 @@ define("seedit/dialog/0.0.1/dialog-debug", [], function(require, exports, module
                 elements = $(elements);
             }
             //一些元素对象
-            $.o = {
+            $$.o = {
                 s: s,
                 ele: elements,
                 bg: eleBlank,
@@ -81,51 +87,51 @@ define("seedit/dialog/0.0.1/dialog-debug", [], function(require, exports, module
             };
             // if an id is specified
             if (s.id) {
-                $.o.out.addClass("x-dialog-" + s.id);
+                $$.o.out.addClass("x-dialog-" + s.id);
             }
             // title
-            $.o.tit.html(s.title);
+            $$.o.tit.html(s.title);
             // close button
-            $.o.clo.html(s.shut);
+            $$.o.clo.html(s.shut);
             // just show close btn
             if (!s.title && s.btnclose) {
-                $.o.bar.css("border", "none");
-                $.o.tit.hide();
-                $.o.clo.css("top", "25px").show();
+                $$.o.bar.css("border", "none");
+                $$.o.tit.hide();
+                $$.o.clo.css("top", "25px").show();
             }
             // @todo focus on close btn
-            //$.o.clo.focus();
+            //$$.o.clo.focus();
             //装载元素
-            $.o.bd.empty().append(elements);
+            $$.o.bd.empty().append(elements);
             if ($.isFunction(s.onshow)) {
                 s.onshow();
             }
             //尺寸
-            $.dialog.setSize();
+            $$.dialog.setSize();
             //定位
-            $.dialog.setPosition();
+            $$.dialog.setPosition();
             if (s.fix) {
-                $.dialog.setFixed();
+                $$.dialog.setFixed();
             }
             if (s.drag) {
-                $.dialog.drag();
+                $$.dialog.drag();
             } else {
                 $(window).resize(function() {
-                    $.dialog.setPosition();
+                    $$.dialog.setPosition();
                 });
             }
             if (!s.bar) {
-                $.dialog.barHide();
+                $$.dialog.barHide();
             } else {
-                $.dialog.barShow();
+                $$.dialog.barShow();
             }
             if (!s.bg) {
-                $.dialog.bgHide();
+                $$.dialog.bgHide();
             } else {
-                $.dialog.bgShow();
+                $$.dialog.bgShow();
             }
             if (!s.btnclose) {
-                $.dialog.closeBtnHide();
+                $$.dialog.closeBtnHide();
             } else {}
             // 弹窗关闭按钮
             $(document).on("click", ".x-dialog-close", function(e) {
@@ -134,88 +140,88 @@ define("seedit/dialog/0.0.1/dialog-debug", [], function(require, exports, module
                 $(".x-overlay").hide();
             });
             if (s.bgclose) {
-                $.dialog.bgClickable();
+                $$.dialog.bgClickable();
             }
             if (s.delay > 0) {
-                setTimeout($.dialog.hide, s.delay);
+                setTimeout($$.dialog.hide, s.delay);
             }
             if (s.border === false) {
-                $.o.out.css("padding", "0");
+                $$.o.out.css("padding", "0");
                 $currentDialog.find(".wrap_in").css("border", "none");
             }
-            return $.o.out;
+            return $$.o.out;
         };
-        $.extend($.dialog, {
+        $.extend($$.dialog, {
             setSize: function() {
-                if (!$.o.bd.size() || !$.o.ele.size() || !$.o.bd.size()) {
+                if (!$$.o.bd.size() || !$$.o.ele.size() || !$$.o.bd.size()) {
                     return;
                 }
                 //主体内容的尺寸
-                $.o.out.css({
-                    width: $.o.s.width,
-                    "height:": $.o.s.height
+                $$.o.out.css({
+                    width: $$.o.s.width,
+                    "height:": $$.o.s.height
                 });
-                return $.o.out;
+                return $$.o.out;
             },
             setPosition: function(flag) {
                 flag = flag || false;
-                if (!$.o.bg.size() || !$.o.ele.size() || !$.o.out.size()) {
+                if (!$$.o.bg.size() || !$$.o.ele.size() || !$$.o.out.size()) {
                     return;
                 }
                 var w = $(window).width(), h = $(window).height(), st = $(window).scrollTop(), ph = $("body").height();
                 if (ph < h) {
                     ph = h;
                 }
-                $.o.bg.width(w).height(ph).css("opacity", $.o.s.opacity);
+                $$.o.bg.width(w).height(ph).css("opacity", $$.o.s.opacity);
                 //主体内容的位置
                 //获取当前主体元素的尺寸
-                var xh = $.o.out.outerHeight(), xw = $.o.out.outerWidth();
+                var xh = $$.o.out.outerHeight(), xw = $$.o.out.outerWidth();
                 var t = st + (h - xh) / 2, l = (w - xw) / 2;
-                if ($.o.s.fix && window.XMLHttpRequest) {
+                if ($$.o.s.fix && window.XMLHttpRequest) {
                     t = (h - xh) / 2;
                 }
                 if (flag === true) {
-                    $.o.out.animate({
+                    $$.o.out.animate({
                         top: t,
                         left: l
                     });
                 } else {
-                    $.o.out.css({
+                    $$.o.out.css({
                         top: t,
                         left: l,
-                        zIndex: $.o.s.index
+                        zIndex: $$.o.s.index
                     });
                 }
-                return $.o.out;
+                return $$.o.out;
             },
             //定位
             setFixed: function() {
-                if (!$.o.out || !$.o.out.size()) {
+                if (!$$.o.out || !$$.o.out.size()) {
                     return;
                 }
                 if (window.XMLHttpRequest) {
-                    $.dialog.setPosition().css({
+                    $$.dialog.setPosition().css({
                         position: "fixed"
                     });
                 } else {
                     $(window).scroll(function() {
-                        $.dialog.setPosition();
+                        $$.dialog.setPosition();
                     });
                 }
-                return $.o.out;
+                return $$.o.out;
             },
             //背景可点击
             bgClickable: function() {
-                if ($.o.bg && $.o.bg.size()) {
-                    $.o.bg.click(function() {
-                        $.dialog.hide();
+                if ($$.o.bg && $$.o.bg.size()) {
+                    $$.o.bg.click(function() {
+                        $$.dialog.hide();
                     });
                 }
             },
             //背景隐藏
             bgHide: function() {
-                if ($.o.bg && $.o.bg.size()) {
-                    $.o.bg.hide();
+                if ($$.o.bg && $$.o.bg.size()) {
+                    $$.o.bg.hide();
                 }
             },
             //背景层显示
@@ -228,36 +234,36 @@ define("seedit/dialog/0.0.1/dialog-debug", [], function(require, exports, module
             },
             //标题栏隐藏
             barHide: function() {
-                if ($.o.bar && $.o.bar.size()) {
-                    $.o.bar.hide();
+                if ($$.o.bar && $$.o.bar.size()) {
+                    $$.o.bar.hide();
                 }
             },
             //标题栏显示
             barShow: function() {
-                if ($.o.bar && $.o.bar.size()) {
-                    $.o.bar.show();
+                if ($$.o.bar && $$.o.bar.size()) {
+                    $$.o.bar.show();
                 }
             },
             //关闭按钮隐藏
             closeBtnHide: function() {
-                if ($.o.clo && $.o.clo.size()) {
-                    $.o.clo.hide();
+                if ($$.o.clo && $$.o.clo.size()) {
+                    $$.o.clo.hide();
                 }
             },
             //弹框隐藏
             hide: function() {
-                if ($.o.ele && $.o.out.size() && $.o.out.css("display") !== "none") {
-                    $.o.out.fadeOut("fast", function() {
-                        if ($.o.s.protect && (!$.o.ele.hasClass("wrap_remind") || $.o.ele.attr("id"))) {
-                            $.o.ele.hide().appendTo($("body"));
+                if ($$.o.ele && $$.o.out.size() && $$.o.out.css("display") !== "none") {
+                    $$.o.out.fadeOut("fast", function() {
+                        if ($$.o.s.protect && (!$$.o.ele.hasClass("wrap_remind") || $$.o.ele.attr("id"))) {
+                            $$.o.ele.hide().appendTo($("body"));
                         }
                         $(this).remove();
-                        if ($.isFunction($.o.s.onclose)) {
-                            $.o.s.onclose();
+                        if ($.isFunction($$.o.s.onclose)) {
+                            $$.o.s.onclose();
                         }
                     });
-                    if ($.o.bg.size()) {
-                        $.o.bg.fadeOut("fast", function() {
+                    if ($$.o.bg.size()) {
+                        $$.o.bg.fadeOut("fast", function() {
                             $(this).remove();
                         });
                     }
@@ -266,11 +272,11 @@ define("seedit/dialog/0.0.1/dialog-debug", [], function(require, exports, module
             },
             //拖拽
             drag: function() {
-                if (!$.o.out.size() || !$.o.bar.size()) {
+                if (!$$.o.out.size() || !$$.o.bar.size()) {
                     $(document).unbind("mouseover").unbind("mouseup");
                     return;
                 }
-                var bar = $.o.bar, out = $.o.out;
+                var bar = $$.o.bar, out = $$.o.out;
                 var drag = false;
                 var currentX = 0, currentY = 0, posX = out.css("left"), posY = out.css("top");
                 bar.mousedown(function(e) {
@@ -294,14 +300,14 @@ define("seedit/dialog/0.0.1/dialog-debug", [], function(require, exports, module
             //预载
             loading: function() {
                 var element = $('<div class="wrap_remind">加载中...</div>');
-                $.dialog(element, {
+                $$.dialog(element, {
                     bar: false
                 });
             },
             //ask询问方法
             confirm: function(message, sureCall, cancelCall, options) {
                 var element = $('<div class="wrap_remind x-dialog-confirm">' + message + '<p><button id="zxxSureBtn" class="submit_btn">确认</button>&nbsp;&nbsp;<button id="zxxCancelBtn" class="cancel_btn">取消</button></p></div>');
-                $.dialog(element, options);
+                $$.dialog(element, options);
                 //回调方法
                 $("#zxxSureBtn").click(function() {
                     if ($.isFunction(sureCall)) {
@@ -312,19 +318,19 @@ define("seedit/dialog/0.0.1/dialog-debug", [], function(require, exports, module
                     if (cancelCall && $.isFunction(cancelCall)) {
                         cancelCall.call(this);
                     }
-                    $.dialog.hide();
+                    $$.dialog.hide();
                 });
             },
             //remind提醒方法
             remind: function(message, callback, options) {
                 var element = $('<div class="wrap_remind x-dialog-remind">' + message + '<p><button id="zxxSubmitBtn" class="submit_btn">确认</button</p></div>');
-                $.dialog(element, options);
+                $$.dialog(element, options);
                 $("#zxxSubmitBtn").click(function() {
                     //回调方法
                     if (callback && $.isFunction(callback)) {
                         callback.call(this);
                     }
-                    $.dialog.hide();
+                    $$.dialog.hide();
                 });
             },
             // 可带icon
@@ -345,7 +351,7 @@ define("seedit/dialog/0.0.1/dialog-debug", [], function(require, exports, module
                 options = $.extend(defaults, options);
                 var iconHTML = '<i class="x-dialog-icon" style="color:' + iconMap[options["icon"]][1] + '">' + iconMap[options["icon"]][0] + "</i>  ";
                 var element = $('<div class="x-dialog-alert">' + iconHTML + message + '<p><button id="x-dialog-button" class="submit_btn x-dialog-confirm">确认</button></p></div>');
-                $.dialog(element, options);
+                $$.dialog(element, options);
                 $(document).on("click", "#x-dialog-button", function() {
                     //回调方法
                     if (callback && $.isFunction(callback)) {
@@ -362,17 +368,17 @@ define("seedit/dialog/0.0.1/dialog-debug", [], function(require, exports, module
             //uri Ajax方法
             ajax: function(uri, params, options) {
                 if (uri) {
-                    $.dialog.loading();
+                    $$.dialog.loading();
                     options = options || {};
                     options.protect = false;
                     $.ajax({
                         url: uri,
                         data: params || {},
                         success: function(html, other) {
-                            $.dialog(html, options);
+                            $$.dialog(html, options);
                         },
                         error: function() {
-                            $.dialog.remind("加载出了点问题。");
+                            $$.dialog.remind("加载出了点问题。");
                         }
                     });
                 }
@@ -414,9 +420,9 @@ define("seedit/dialog/0.0.1/dialog-debug", [], function(require, exports, module
         // hide dialog when press key ESC
         $(document).keyup(function(e) {
             if (e.keyCode == 27) {
-                $.dialog.hide();
+                $$.dialog.hide();
             }
         });
     })(jQuery);
-    module.exports = jQuery;
+    module.exports = $$;
 });
