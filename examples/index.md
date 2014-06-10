@@ -1,91 +1,35 @@
-# 快捷方式
+# Dialog - 基础调用
+
+- order: 1
+
 ---
 
-## normal
-<a href="javascript:" id="test00">点我</a>
+主要演示传入各种 content，以及传入 url 的自动识别和高度管理。本页面载入了一份预设样式 [dialog.css](../src/dialog.css)。
+
+<link href="http://aralejs.org/dialog/src/dialog.css" rel="stylesheet">
+<style>
+.fn-hide {display:none;}
+</style>
+
+---
+
+### 1. 基本调用，内容传入字符串
+
+<button id="example1">内容传入字符串</button>
 
 ````javascript
- seajs.use('dialog', function($){
-    $("#test00").click(function(){
-     $.dialog("<p>你已成功受邀参加威尼斯电影节。</p>",{title:'haha'});
- });
- });
- ````
-
-## alert
-<a href="javascript:" id="test0">点我</a>
-
-
-````javascript
-seajs.use('dialog', function($){
-   $("#test0").click(function(){
-    $.dialog.alert("你已成功受邀参加威尼斯电影节。",null);
-});
+seajs.use(['index'], function(Dialog) {
+    //console.log(Dialog);
+    new Dialog({
+        trigger: '#example1',
+        height: '100px',
+        content: '传入了字符串'
+    });
 });
 ````
 
+<select></select>
+<select></select>
+<select></select>
+<select></select>
 
-## remind
-<a href="javascript:" id="test1">点我</a>
-
-````javascript
-seajs.use('dialog', function($){
-   $("#test1").click(function(){
-    $.dialog.remind("你已成功受邀参加威尼斯电影节。",null,{bar:false});                        
-});
-});
-````
-
-## alert no overlay
-<a href="javascript:" id="test11">点我</a>
-
-````javascript
-seajs.use('dialog', function($){
-   $("#test11").click(function(){
-    $.dialog.remind("你已成功受邀参加威尼斯电影节。",null,{bar:false,bg:false});                        
-});
-});
-````
-
-## alert no border
-<a href="javascript:" id="test12">点我</a>
-
-````javascript
-seajs.use('dialog', function($){
-   $("#test12").click(function(){
-    $.dialog.remind("你已成功受邀参加威尼斯电影节。",null,{title:false,bg:false,border:false,btnclose:true});                        
-});
-});
-````
-
-
-## alert with callback
-<a href="javascript:" id="test2">点我</a>
-````javascript
-seajs.use('dialog', function($){
-$("#test2").click(function(){
-    $.dialog.remind('美国驻沪领事馆权威发布：上半年<a href="#nogo" title="上海">上海</a>赴美留学3.2万人。', function(){
-        alert("哇哈哈，这是回调函数显示的内容：今年上海的学生签证通过率达到了95%。去年这一数字为90%。");
-    }, {
-        title: "参考消息"   
-    });                        
-}); 
-});
-````
-
-
-## confirm
-
-<a href="javascript:" id="test3">点我</a>
-````javascript
-seajs.use('dialog', function($){
-$("#test3").click(function(){
-    $.dialog.confirm("确认改变页面的背景色为天蓝色", function(){
-        $("body").css("background-color", "azure"); 
-        $.dialog.hide();
-    }, null, {
-        title: "友情提示"   
-    });                        
-}); 
-});
-````

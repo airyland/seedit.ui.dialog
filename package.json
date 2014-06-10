@@ -1,13 +1,12 @@
 {
-  "family": "moe",
   "name": "dialog",
-  "version": "0.0.2",
+  "version": "1.4.0",
   "description": "dialog solution",
-  "homepage": "https://github.com/airyland/seedit.ui.dialog",
+  "homepage": "https://github.com/aralejs/dialog",
   "author": "",
   "repository": {
     "type": "git",
-    "url": "https://github.com/airyland/seedit.ui.dialog"
+    "url": "https://github.com/aralejs/dialog"
   },
   "bugs": {
     "url": ""
@@ -15,9 +14,16 @@
   "keywords": [],
   "licenses": "MIT",
   "spm": {
-    "output": ["dialog.js"],
+    "main": "index.js",
     "alias": {},
     "devAlias": {},
-    "engines": {}
+    "engines": {
+      "seajs": "2.2.1",
+      "seajs-text": "1.1.0"
+    },
+    "dependencies": {
+      "arale-dialog": "1.4.0",
+      "seajs": "2.2.1"
+    }
   }
 }
